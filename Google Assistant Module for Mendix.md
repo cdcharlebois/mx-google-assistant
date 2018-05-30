@@ -43,17 +43,25 @@ To add a new action to your application, follow these steps:
 4. Enable the webhook call as the intent's fulfillment
 5. Save the intent
 6. Return to the Mendix Modeler
-7. Duplicate the **SUB_Action_Template** microflow and move it to your own module.
-8. Rename the microflow **SUB_Action_{nameOfDialogflowAction}**, for example: SUB_Action_CreateRequest
-9. Modify the microflow as follows:
-   1. If your microflow requires parameters, use the split activity at the start of the microflow to check that those parameters are not empty.
-   2. Execute your application logic. 
-   3. Modify the **GetHTTPResponse** call to pass back a string of text to be spoken back to the user
-10. Modify the **ASU_SetupActionRegistry** as follows:
+7. If your action requires parameters, add those parameters to the JSON structure/Mapping as follows:
+   1. Open the JSON Structure **GA_Fulfillment_Request**
+   2. Find the `parameters` key under `result` in the JSON
+   3. Add the key and an example value for your parameter, for example: `"name": "Conner",`
+   4. Refresh the JSON Structure
+   5. Open the Import Mapping with the same name
+   6. From the **Select Elements** dialog, check the box next to the attribute you just added
+   7. Click **Map Automatically**
+8. Duplicate the **SUB_Action_Template** microflow and move it to your own module.
+9. Rename the microflow **SUB_Action_{nameOfDialogflowAction}**, for example: SUB_Action_CreateRequest
+10. Modify the microflow to process the intent:
+    1. If your microflow requires parameters, use the split activity at the start of the microflow to check that those parameters are not empty.
+    2. Execute your application logic. 
+    3. Modify the **GetHTTPResponse** call to pass back a string of text to be spoken back to the user
+11. Modify the **ASU_SetupActionRegistry** to add a mapping between the intent name and the action microflow:
     1. Add a new java action activity that calls the java action **AddActionToRegistry**
     2. Enter the action name as a string (from 3), for example: CreateRequest
     3. Enter the action microflow (from 8,9), for example: SUB_Action_CreateRequest
-11. Publish your changes!
+12. Publish your changes!
 
 ### How do I identify the Mendix user?
 
